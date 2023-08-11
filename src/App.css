@@ -1,3 +1,6 @@
+.main {
+  display: flex;
+}
 .array {
   display: flex;
   justify-content: center;
@@ -20,4 +23,24 @@
 
 .swapped {
   background-color: #dc3545;
+}
+
+.sorting-visualizer {
+  display: flex;
+  align-items: flex-end;
+  height: 300px;
+  padding: 10px;
+}
+
+.bar {
+  width: 20px;
+  margin: 0 2px;
+  background-color: #3498db;
+  display: inline-block;
+  text-align: center;
+  color: white;
+}
+
+.controls {
+  margin-top: 20px;
 }

@@ -1,27 +1,54 @@
-# React + TypeScript + Vite
+# Sorting Algorithm Visualization
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a web application that visualizes various sorting algorithms. It provides a visual representation of how different sorting algorithms work by animating the sorting process step by step.
 
-Currently, two official plugins are available:
+## Algorithms Implemented
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Bubble Sort
+- Selection Sort
+- Insertion Sort
+- (Planned) Merge Sort
+- (Planned) Quick Sort
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Clone or download the project repository.
+2. Install the required dependencies using `npm install` or `yarn install`.
+3. Start the development server using `npm run dev` or `yarn run dev`.
+4. Open your browser and navigate to the specified local server address.
 
-- Configure the top-level `parserOptions` property like this:
+## How to Use
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+1. Click on the "Generate New Array" button to generate a new random array.
+2. Click on the respective sorting algorithm button to visualize the sorting process.
+3. Observe how the bars representing the array elements are rearranged step by step to achieve a sorted order.
+
+## Code Snippets
+
+### Bubble Sort
+
+```tsx
+// ... (import statements and component setup)
+
+const bubbleSort = async () => {
+  // code will updated soon
+};
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Selection Sort
+
+```tsx
+const selectionSort = async () => {
+  // code will updated soon
+};
+```
+
+### Insertion Sort
+
+````tsx
+// ... (import statements and component setup)
+
+const insertionSort = async () => {
+  // code will updated soon
+} ```
+````
