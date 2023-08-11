@@ -1,69 +1,60 @@
 import React, { useState, useEffect } from "react";
 
-const InsertionSortVisualizer: React.FC = () => {
+const SortingVisualizer: React.FC = () => {
   const [array, setArray] = useState<number[]>([]);
-  const [sortedIndexes, setSortedIndexes] = useState<number[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-
-  // Generate a random array of numbers
-  const generateRandomArray = () => {
-    const newArray: number[] = Array.from(
-      { length: 10 },
-      () => Math.floor(Math.random() * 100) + 1
-    );
-    setArray(newArray);
-    setSortedIndexes([]);
-    setCurrentIndex(null);
-  };
-
-  // Insertion sort algorithm
-  const insertionSort = async () => {
-    let tempArray: number[] = array.slice();
-    let animations: [number, number][] = [];
-
-    for (let i = 1; i < tempArray.length; i++) {
-      let j = i;
-      while (j > 0 && tempArray[j] < tempArray[j - 1]) {
-        animations.push([j, j - 1]);
-        [tempArray[j], tempArray[j - 1]] = [tempArray[j - 1], tempArray[j]];
-        j--;
-      }
-    }
-
-    for (const [index1, index2] of animations) {
-      setCurrentIndex(index2);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      [tempArray[index1], tempArray[index2]] = [
-        tempArray[index2],
-        tempArray[index1],
-      ];
-      setArray([...tempArray]);
-    }
-
-    setSortedIndexes([...Array(tempArray.length).keys()]);
-  };
 
   useEffect(() => {
     generateRandomArray();
   }, []);
 
+  const generateRandomArray = () => {
+    const newArray = Array.from(
+      { length: 20 },
+      () => Math.floor(Math.random() * 100) + 10
+    );
+    setArray(newArray);
+  };
+
+  const selectionSort = async () => {
+    for (let i = 0; i < array.length; i++) {
+      let minIndex = i;
+
+      for (let j = i + 1; j < array.length; j++) {
+        if (array[j] < array[minIndex]) {
+          minIndex = j;
+        }
+      }
+
+      if (minIndex !== i) {
+        await sleep(100); // Add a delay for visualization
+        swap(i, minIndex);
+      }
+    }
+  };
+
+  const swap = (index1: number, index2: number) => {
+    const temp = array[index1];
+    array[index1] = array[index2];
+    array[index2] = temp;
+    setArray([...array]);
+  };
+
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   return (
-    <div>
-      <div className="array">
-        {array.map((value, index) => (
-          <div
-            key={index}
-            className={`array-bar ${
-              sortedIndexes.includes(index) ? "sorted" : ""
-            } ${index === currentIndex ? "current" : ""}`}
-            style={{ height: `${value}%` }}
-          ></div>
-        ))}
+    <div className="sorting-visualizer">
+      {array.map((value, index) => (
+        <div key={index} className="bar" style={{ height: `${value * 2}px` }}>
+          {value}
+        </div>
+      ))}
+      <div className="controls">
+        <button onClick={generateRandomArray}>Generate New Array</button>
+        <button onClick={selectionSort}>Insertion Sort</button>
       </div>
-      <button onClick={generateRandomArray}>Generate New Array</button>
-      <button onClick={insertionSort}>Insertion Sort</button>
     </div>
   );
 };
 
-export default InsertionSortVisualizer;
+export default SortingVisualizer;
