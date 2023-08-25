@@ -1,71 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { initialArray } from "../../constants/initialArray";
+import propsType from "../../types/barPropsType";
+import BarLayout from "../common/BarLayout";
 
 const SelectionSortVisualizer: React.FC = () => {
-  const [array, setArray] = useState<number[]>([]);
-  const [sortedIndexes, setSortedIndexes] = useState<number[]>([]);
-  const [currentMinIndex, setCurrentMinIndex] = useState<number>(-1);
-
-  useEffect(() => {
-    generateRandomArray();
-  }, []);
-
-  const generateRandomArray = () => {
-    const newArray = Array.from(
-      { length: 10 },
-      () => Math.floor(Math.random() * 100) + 1
-    );
-    setArray(newArray);
-    setSortedIndexes([]);
-    setCurrentMinIndex(-1);
-  };
+  const [sortingArray, setSortingArray] = useState<propsType>({
+    animatedArray: [...initialArray],
+    from: -1, // Initialize with -1
+    to: -1, // Initialize with -1
+  });
+  const [arr, setArr] = useState<number[]>([...initialArray]);
 
   const selectionSort = async () => {
-    const n = array.length;
-    const animations: [number, number, number][] = [];
-
-    for (let i = 0; i < n - 1; i++) {
+    for (let i = 0; i < arr.length - 1; i++) {
       let minIndex = i;
-
-      for (let j = i + 1; j < n; j++) {
-        animations.push([minIndex, j, 1]); // Comparing
-        if (array[j] < array[minIndex]) {
+      for (let j = i + 1; j < arr.length; j++) {
+        if (arr[j] < arr[minIndex]) {
           minIndex = j;
         }
       }
 
-      animations.push([minIndex, i, 2]); // Swapping
-      [array[i], array[minIndex]] = [array[minIndex], array[i]];
-      setArray([...array]);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      animations.push([minIndex, i, 0]); // Reset color
-      setSortedIndexes([...sortedIndexes, i]);
-      setCurrentMinIndex(minIndex);
-    }
+      if (minIndex !== i) {
+        // Swap elements and update state
+        let temp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = temp;
+        setSortingArray({
+          animatedArray: arr,
+          from: i,
+          to: minIndex,
+        });
+      }
 
-    setSortedIndexes([...sortedIndexes, n - 1]);
-    setCurrentMinIndex(-1);
+      // Wait for a short delay before the next step
+      await new Promise<void>((resolve) => setTimeout(resolve, 50));
+    }
+  };
+
+  const handleReset = () => {
+    setArr([...initialArray]);
+    setSortingArray({
+      animatedArray: [...initialArray],
+      from: -1,
+      to: -1,
+    });
   };
 
   return (
-    <div>
-      <div className="array-container">
-        {array.map((value, index) => (
-          <div
-            key={index}
-            className={`array-bar ${
-              sortedIndexes.includes(index) ? "sorted" : ""
-            } ${index === currentMinIndex ? "current-min" : ""}`}
-            style={{ height: `${value}%` }}
-          >
-            {value}
-          </div>
-        ))}
-      </div>
-      <div className="controls">
-        <button onClick={generateRandomArray}>Generate New Array</button>
-        <button onClick={selectionSort}>Selection Sort</button>
-      </div>
-    </div>
+    <BarLayout
+      title="Selection Sort"
+      handleSort={selectionSort}
+      handleReset={handleReset}
+      array={sortingArray}
+    />
   );
 };
 

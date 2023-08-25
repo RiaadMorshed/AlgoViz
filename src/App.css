@@ -1,5 +1,27 @@
-.main {
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-image: linear-gradient(
+      #ecfccb 1.4000000000000001px,
+      transparent 1.4000000000000001px
+    ),
+    linear-gradient(
+      to right,
+      #ecfccb 1.4000000000000001px,
+      #f7fee7 1.4000000000000001px
+    );
+  background-size: 28px 28px;
+}
+.cards {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
+  }
 }
 .array {
   display: flex;
@@ -10,10 +32,13 @@
   padding: 10px;
 }
 
+.array-container {
+  display: flex;
+  flex-flow: row;
+}
 .array-bar {
-  width: 30px;
+  width: 20px;
   margin: 0 2px;
-  background-color: #007bff;
   transition: height 0.3s, background-color 0.3s;
 }
 

@@ -1,60 +1,53 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import propsType from "../../types/barPropsType";
+import { initialArray } from "../../constants/initialArray";
+import BarLayout from "../common/BarLayout";
 
-const SortingVisualizer: React.FC = () => {
-  const [array, setArray] = useState<number[]>([]);
+const InsertionSortVisualizer: React.FC = () => {
+  const [sortingArray, setSortingArray] = useState<propsType>({
+    animatedArray: [...initialArray],
+    from: -1, // Initialize with -1
+    to: -1, // Initialize with -1
+  });
+  const [array, setArray] = useState<number[]>([...initialArray]);
+  const insertionSort = async () => {
+    for (let i = 1; i < array.length; i++) {
+      let j = i;
+      while (j > 0 && array[j] < array[j - 1]) {
+        // Swap elements and update state
+        let temp = array[j];
+        array[j] = array[j - 1];
+        array[j - 1] = temp;
+        setSortingArray({
+          animatedArray: array,
+          from: j - 1,
+          to: j,
+        });
+        j--;
 
-  useEffect(() => {
-    generateRandomArray();
-  }, []);
-
-  const generateRandomArray = () => {
-    const newArray = Array.from(
-      { length: 20 },
-      () => Math.floor(Math.random() * 100) + 10
-    );
-    setArray(newArray);
-  };
-
-  const selectionSort = async () => {
-    for (let i = 0; i < array.length; i++) {
-      let minIndex = i;
-
-      for (let j = i + 1; j < array.length; j++) {
-        if (array[j] < array[minIndex]) {
-          minIndex = j;
-        }
-      }
-
-      if (minIndex !== i) {
-        await sleep(100); // Add a delay for visualization
-        swap(i, minIndex);
+        // Wait for a short delay before the next step
+        await new Promise<void>((resolve) => setTimeout(resolve, 50));
       }
     }
   };
 
-  const swap = (index1: number, index2: number) => {
-    const temp = array[index1];
-    array[index1] = array[index2];
-    array[index2] = temp;
-    setArray([...array]);
+  const handleReset = () => {
+    setArray([...initialArray]);
+    setSortingArray({
+      animatedArray: [...initialArray],
+      from: -1,
+      to: -1,
+    });
   };
 
-  const sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
   return (
-    <div className="sorting-visualizer">
-      {array.map((value, index) => (
-        <div key={index} className="bar" style={{ height: `${value * 2}px` }}>
-          {value}
-        </div>
-      ))}
-      <div className="controls">
-        <button onClick={generateRandomArray}>Generate New Array</button>
-        <button onClick={selectionSort}>Insertion Sort</button>
-      </div>
-    </div>
+    <BarLayout
+      title="Insertion Sort"
+      handleSort={insertionSort}
+      handleReset={handleReset}
+      array={sortingArray}
+    />
   );
 };
 
-export default SortingVisualizer;
+export default InsertionSortVisualizer;
