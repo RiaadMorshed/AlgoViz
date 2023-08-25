@@ -1,75 +1,56 @@
 import React, { useState } from "react";
+import propsType from "../../types/barPropsType";
+import { initialArray } from "../../constants/initialArray";
+import BarLayout from "../common/BarLayout";
 
 const BubbleSortVisualizer: React.FC = () => {
-  const [array, setArray] = useState<number[]>([]);
-  const [sortedIndexes, setSortedIndexes] = useState<number[]>([]);
-  const [comparingIndexes, setComparingIndexes] = useState<number[]>([]);
-  const [swappedIndexes, setSwappedIndexes] = useState<number[]>([]);
+  const [array, setArray] = useState<number[]>([...initialArray]);
 
-  // Generate a random array of numbers
-  const generateRandomArray = () => {
-    const newArray: number[] = Array.from(
-      { length: 10 },
-      () => Math.floor(Math.random() * 100) + 1
-    );
-    setArray(newArray);
-    setSortedIndexes([]);
-    setComparingIndexes([]);
-    setSwappedIndexes([]);
-  };
+  const [sortingArray, setSortingArray] = useState<propsType>({
+    animatedArray: [...initialArray],
+    from: -1,
+    to: -1,
+  });
 
-  // Bubble sort algorithm
   const bubbleSort = async () => {
-    let tempArray: number[] = array.slice();
-    let animations: [number, number][] = [];
-
-    for (let i = 0; i < tempArray.length - 1; i++) {
-      for (let j = 0; j < tempArray.length - i - 1; j++) {
-        animations.push([j, j + 1]);
-
-        if (tempArray[j] > tempArray[j + 1]) {
-          [tempArray[j], tempArray[j + 1]] = [tempArray[j + 1], tempArray[j]];
-          animations.push([j, j + 1]);
+    let swapped;
+    do {
+      swapped = false;
+      for (let i = 0; i < array.length - 1; i++) {
+        if (array[i] > array[i + 1]) {
+          // Swap elements and update state
+          let temp = array[i];
+          array[i] = array[i + 1];
+          array[i + 1] = temp;
+          setSortingArray({
+            animatedArray: array,
+            from: i,
+            to: i + 1,
+          });
+          swapped = true;
+          // Wait for a short delay before the next step
+          await new Promise<void>((resolve) => setTimeout(resolve, 50));
         }
       }
-      setSortedIndexes((indexes) => [tempArray.length - i - 1, ...indexes]);
-    }
+    } while (swapped);
+  };
 
-    for (const [index1, index2] of animations) {
-      setComparingIndexes([index1, index2]);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      setSwappedIndexes([index1, index2]);
-      [tempArray[index1], tempArray[index2]] = [
-        tempArray[index2],
-        tempArray[index1],
-      ];
-      setArray([...tempArray]);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      setComparingIndexes([]);
-      setSwappedIndexes([]);
-    }
+  const handleReset = () => {
+    setArray([...initialArray]);
+    setSortingArray({
+      animatedArray: [...initialArray],
+      from: -1,
+      to: -1,
+    });
   };
 
   return (
-    <div>
-      <div className="array">
-        {array.map((value, index) => (
-          <div
-            key={index}
-            className={`array-bar 
-              ${sortedIndexes.includes(index) ? "sorted" : ""}
-              ${comparingIndexes.includes(index) ? "comparing" : ""}
-              ${swappedIndexes.includes(index) ? "swapped" : ""}`}
-            style={{ height: `${value * 3}px` }}
-          >
-            {value}
-          </div>
-        ))}
-      </div>
-      <button onClick={generateRandomArray}>Generate New Array</button>
-      <button onClick={bubbleSort}>Bubble Sort</button>
-    </div>
+    <BarLayout
+      title="Bubble Sort"
+      handleSort={bubbleSort}
+      handleReset={handleReset}
+      array={sortingArray}
+    />
   );
 };
-
 export default BubbleSortVisualizer;
