@@ -27,3 +27,11 @@ This project is a web application that visualizes various sorting algorithms. It
 2. Install the required dependencies using `npm install` or `yarn install`.
 3. Start the development server using `npm run dev` or `yarn run dev`.
 4. Open your browser and navigate to the specified local server address.
+
+## Todo Features
+
+- Generate array button to randomly generate array. The length of the array would be determined by browser window size.
+- Ability to pause and resume the sorting function.
+- Create a logo for this project.
+- Showing the time taken by the sorting function
+- Option for comparing two algorithms in real time and determining the winner.
