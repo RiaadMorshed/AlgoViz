@@ -34,7 +34,7 @@ export const algorithms = [
   {
     id: 5,
     name: "Quick Sort",
-    timeComplexity: "O(log n)",
+    timeComplexity: "O(n log n)",
     spaceComplexity: "O(1)",
     link: "/quick-sort",
     background: "#ffedd5"
