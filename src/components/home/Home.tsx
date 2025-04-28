@@ -40,7 +40,7 @@ const Home: React.FC = () => {
         ))}
       </div>
       <div className="text-gray-500 text-center py-4">
-        © 2023{" "}
+        © {new Date().getFullYear()}{" "}
         <a
           className="underline text-blue-400"
           href="https://riaadmorshed.github.io/portfolio/"
